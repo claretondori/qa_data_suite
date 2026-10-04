@@ -3,7 +3,7 @@
 Built for the Revelio Labs QA Engineer (Intern) application.
 
 **What this is**
-- **Part 1: API tests.** A pytest suite against the public [JSONPlaceholder](https://jsonplaceholder.typicode.com) API covering successful requests, invalid input, edge cases and documented "known gaps" (23 tests).
+- **Part 1: API tests.** A pytest suite against the public [JSONPlaceholder](https://jsonplaceholder.typicode.com) API covering successful requests, invalid input, edge cases and documented known gaps (23 tests).
 - **Part 2: Data-quality checks.** 12 named SQL queries run on real LinkedIn job-postings data. They find duplicates, missing values, impossible dates and salary problems, and the queries themselves are tested (22 tests).
 - `docs/findings.md`: what I found and how I would fix or prevent it.
 - `docs/bug_report.md`: a sample bug report written for an engineer.

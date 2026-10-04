@@ -1,6 +1,5 @@
 # QA project: API tests + data-quality checks
 
-Built for the Revelio Labs QA Engineer (Intern) application.
 
 **What this is**
 - **Part 1: API tests.** A pytest suite against the public [JSONPlaceholder](https://jsonplaceholder.typicode.com) API covering successful requests, invalid input, edge cases and documented known gaps (23 tests).

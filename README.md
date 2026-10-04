@@ -12,7 +12,7 @@ Built for the Revelio Labs QA Engineer (Intern) application.
 
 ## Data source
 Kaggle dataset "LinkedIn Job Postings (2023-2024)" by arshkon (123,849 postings).
-License: <paste the license shown on the Kaggle page>.
+License: CC BY-SA 4.0.
 
 The repo ships a **5,000-row random sample** (seed 42) in `data/job_postings_sample.csv`, because the full file is large. `prepare_data.py` only renames columns, converts timestamps to dates and samples rows. It does **not** correct any values, because finding the errors is the point.
 

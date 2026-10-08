@@ -5,7 +5,7 @@
 **Severity:** High (wrong numbers reach customers)   **Priority:** Fix before release
 **Component:** salary / pay_period ingestion
 **Found by:** `salary_magnitude_vs_pay_period` in `sql/checks.sql`
-**Environment:** Kaggle "LinkedIn Job Postings (2023-2024)"; 5,000-row sample (seed 42) and the full 123,849-row file
+**Environment:** Kaggle *LinkedIn Job Postings (2023-2024)*; 5,000-row sample (seed 42) and the full 123,849-row file
 
 ## Summary
 The `pay_period` field disagrees with the size of the salary. YEARLY postings with pay in the tens, and an HOURLY posting with pay in the tens of thousands, show that units are mislabeled or mis-scaled. Any average, comparison or hourly-to-annual conversion that trusts `pay_period` is wrong for these rows.
@@ -34,7 +34,7 @@ Examples from the sample:
 | 3906091917 | Senior Director Social Enterprise | YEARLY | 100 | 135 | $100-135 thousand per year |
 | 3904709119 | EMT Part-Time (RedBalloon) | HOURLY | 29,120 | 33,280 | $14-16 per hour, already multiplied by 2,080 hours |
 
-Pattern in the sample: 6 look like hourly wages marked YEARLY, 4 look like thousands, 1 is an annual figure marked HOURLY, and 1 is ambiguous. The "likely true meaning" column is my reading of the job titles, not confirmed against the source postings.
+Pattern in the sample: 6 look like hourly wages marked YEARLY, 4 look like thousands, 1 is an annual figure marked HOURLY, and 1 is ambiguous. The *likely true meaning* column is my reading of the job titles, not confirmed against the source postings.
 
 ## Impact
 - In the sample, the average HOURLY `salary_max` is about $119. Without the single EMT row it is about $65.
@@ -42,11 +42,11 @@ Pattern in the sample: 6 look like hourly wages marked YEARLY, 4 look like thous
 - YEARLY values like 24 pull yearly averages down and distort salary comparisons between companies or regions.
 
 ## Suspected cause (hypothesis, not confirmed)
-The pay period appears to come from what the employer entered or from a default, and sometimes disagrees with the numbers entered. The "80-95K" title suggests "K" shorthand is not expanded when the salary is parsed.
+The pay period appears to come from what the employer entered or from a default, and sometimes disagrees with the numbers entered. The 80-95K title suggests K shorthand is not expanded when the salary is parsed.
 
 ## Suggested fix
 1. Add a release-blocking check that pay_period matches the salary magnitude (the query above).
-2. Expand "K" notation and standardise units at ingestion.
+2. Expand K notation and standardise units at ingestion.
 3. Quarantine contradictory rows for review instead of publishing them.
 
 ## Verification

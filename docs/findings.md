@@ -50,7 +50,7 @@ The wide-range check is the more precise of the two. It catches the RN posting a
 - **Checks that found nothing, on both sample and full data:** expiry before posted, closed before posted, implausible posted date, min greater than max, non-positive salary, applies greater than views. These risks were checked and are clean.
 
 ## How I verified my own queries
-Every check has a unit test on a small hand-made table (`tests/test_checks_unit.py`), including boundary cases. Real data also exposed a flaw in my first outlier rule (tiny pay-period groups), which I fixed and tested. I confirmed the tests can fail by changing a comparison operator and watching the matching test break.
+Every check has a unit test on a small hand-made table (`tests/test_checks_unit.py`), including boundary cases. Real data also exposed a flaw in my first outlier rule , which I fixed and tested. I confirmed the tests can fail by changing a comparison operator and watching the matching test break.
 
 ## Limits
 - Duplicates use an exact normalised key. Near-duplicates ( Sr. vs Senior) need fuzzy matching, and rows with a missing company are skipped.

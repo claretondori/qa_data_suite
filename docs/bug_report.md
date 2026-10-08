@@ -21,7 +21,7 @@ The `pay_period` field disagrees with the size of the salary. YEARLY postings wi
 YEARLY salaries are in the thousands or more; HOURLY rates are small (tens, or low hundreds for specialists). The query returns 0 rows.
 
 ## Actual result
-- **Sample:** 12 rows (1.0% of the 1,211 postings that list a salary).
+- **Sample:** 12 rows (1.0% of the 1 211 postings that list a salary).
 - **Full file:** 391 rows (0.32% of all postings).
 
 Examples from the sample:
@@ -38,7 +38,7 @@ Pattern in the sample: 6 look like hourly wages marked YEARLY, 4 look like thous
 
 ## Impact
 - In the sample, the average HOURLY `salary_max` is about $119. Without the single EMT row it is about $65.
-- A pipeline that annualises HOURLY pay (x 2,080) would turn the EMT row into 69,222,400 per year.
+- A pipeline that annualises HOURLY pay (x 2 080) would turn the EMT row into 69 222 400 per year.
 - YEARLY values like 24 pull yearly averages down and distort salary comparisons between companies or regions.
 
 ## Suspected cause (hypothesis, not confirmed)

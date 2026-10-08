@@ -55,7 +55,7 @@ docs/bug_report.md             sample bug report
 - **Known gaps are documented, not hidden.** Two tests are marked `xfail`: JSONPlaceholder accepts an empty body and wrong field types and still returns 201, where a production API should return 400/422. JSONPlaceholder is a fake API that does not save writes, so one test records that behaviour on purpose.
 - **I checked that the tests can fail.** Changing `>` to `>=` in the min/max salary check makes a unit test fail, as it should.
 
-## Results at a glance
+## Results 
 | Check | Sample (5 000) | Full data (123,849) |
 |---|---|---|
 | Pay period contradicts salary size | 12 | 391 |

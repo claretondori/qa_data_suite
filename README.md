@@ -10,10 +10,10 @@
 **Test status:** `45 collected = 43 passed + 2 xfailed` (the xfails are deliberate, see below).
 
 ## Data source
-Kaggle dataset "LinkedIn Job Postings (2023-2024)" by arshkon (123,849 postings).
+Kaggle dataset *LinkedIn Job Postings (2023-2024)* by arshkon (123,849 postings).
 License: CC BY-SA 4.0.
 
-The repo ships a **5,000-row random sample** (seed 42) in `data/job_postings_sample.csv`, because the full file is large. `prepare_data.py` only renames columns, converts timestamps to dates and samples rows. It does **not** correct any values, because finding the errors is the point.
+The repo ships a **5 000-row random sample** (seed 42) in `data/job_postings_sample.csv`, because the full file is large. `prepare_data.py` only renames columns, converts timestamps to dates and samples rows. It does **not** correct any values, because finding the errors is the point.
 
 I used `original_listed_time` as the posting date. In the sample, posted dates run from 2024-01-26 to 2024-04-20, so this data is mostly a snapshot of early 2024, not the whole of 2023-2024.
 
@@ -28,8 +28,8 @@ python run_checks.py --counts        # just the counts
 
 ### Rebuild the sample or run on the full data
 1. Download `postings.csv` from Kaggle into `raw/` (this folder is git-ignored).
-2. `python prepare_data.py raw/postings.csv` writes the 5,000-row sample and a full cleaned file (`data/job_postings_full.csv`, also git-ignored).
-3. Run the checks on all 123,849 rows:
+2. `python prepare_data.py raw/postings.csv` writes the 5 000-row sample and a full cleaned file (`data/job_postings_full.csv`, also git-ignored).
+3. Run the checks on all 123 849 rows:
 ```bash
 QA_DATASET=job_postings_full.csv python run_checks.py --counts
 ```
@@ -49,14 +49,14 @@ docs/bug_report.md             sample bug report
 ```
 
 ## How the tests are designed
-- **The SQL checks are tested, not just run.** Each check has a unit test with a few good rows plus one bad row, and must flag exactly that row. Tests also cover boundaries (min = max is allowed; exactly 10x is not "wider than 10x"; a still-open posting is not "closed before posted").
+- **The SQL checks are tested, not just run.** Each check has a unit test with a few good rows plus one bad row, and must flag exactly that row. Tests also cover boundaries (min = max is allowed; exactly 10x is not wider than 10x; a still-open posting is not closed before posted).
 - **Golden snapshot.** `test_real_data.py` pins what each check finds on the sample, so a changed query or changed data makes a test fail.
 - **API tests check the contract,** not just that a response arrived: status code, content type, fields, types, and referential integrity (every post author exists).
 - **Known gaps are documented, not hidden.** Two tests are marked `xfail`: JSONPlaceholder accepts an empty body and wrong field types and still returns 201, where a production API should return 400/422. JSONPlaceholder is a fake API that does not save writes, so one test records that behaviour on purpose.
 - **I checked that the tests can fail.** Changing `>` to `>=` in the min/max salary check makes a unit test fail, as it should.
 
 ## Results at a glance
-| Check | Sample (5,000) | Full data (123,849) |
+| Check | Sample (5 000) | Full data (123,849) |
 |---|---|---|
 | Pay period contradicts salary size | 12 | 391 |
 | Missing company name / required field | 64 | 1,719 |

@@ -1,4 +1,4 @@
-"""Tests on the real sample. Counts are a 'golden snapshot': they pin what the checks found on
+"""Tests on the real sample. Counts are a snapshot : they pin what the checks found on
 the committed sample, so any change to a query or to the data shows up as a failing test."""
 import pytest
 from run_checks import new_db, load_csv, run_all

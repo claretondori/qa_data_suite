@@ -1,8 +1,8 @@
 
 # Data quality findings: LinkedIn job postings
 
-**Data:** Kaggle *LinkedIn Job Postings (2023-2024)*, 123,849 postings. I ran every check on a 5,000-row random sample (seed 42, committed) and on the full file.
-Posted dates in the sample run from 2024-01-26 to 2024-04-20. Only 1,211 of the 5,000 sample rows (24.2%) list a salary, so the salary checks cover about a quarter of the data.
+**Data:** Kaggle *LinkedIn Job Postings (2023-2024)*, 123 849 postings. I ran every check on a 5 000-row random sample (seed 42, committed) and on the full file.
+Posted dates in the sample run from 2024-01-26 to 2024-04-20. Only 1 211 of the 5 000 sample rows (24.2%) list a salary, so the salary checks cover about a quarter of the data.
 Queries are in `sql/checks.sql`; reproduce with `python run_checks.py`.
 
 ## Summary
@@ -19,15 +19,15 @@ Queries are in `sql/checks.sql`; reproduce with `python run_checks.py`.
 ## Details
 
 ### 1. Pay period contradicts the salary size (highest priority)
-The check flags YEARLY pay under 1,000 and HOURLY pay over 1,000. On the sample, the 12 rows split into three kinds (my reading of the job titles):
+The check flags YEARLY pay under 1,000 and HOURLY pay over 1 000. On the sample, the 12 rows split into three kinds (my reading of the job titles):
 - **Hourly wages labeled YEARLY (6 rows):** Data Entry Specialist 20-24, TikTok intern 22-24, Kaiser Psychiatric RN 54.16-67.07, and similar.
-- **Salary in thousands labeled YEARLY (4 rows, plus 1 ambiguous):** one posting's own title says "80-95K" while the data says 80-95. Others: 50-85, 120-160, 100-135.
-- **Annual salary labeled HOURLY (1 row):** an EMT posting at 29,120-33,280. Those are exactly 14 x 2,080 and 16 x 2,080, so $14-16/hr already multiplied by a full year's hours.
+- **Salary in thousands labeled YEARLY (4 rows, plus 1 ambiguous):** one posting's own title says 80-95K while the data says 80-95. Others: 50-85, 120-160, 100-135.
+- **Annual salary labeled HOURLY (1 row):** an EMT posting at 29,120-33,280. Those are exactly 14 x 2 080 and 16 x 2 080, so $14-16/hr already multiplied by a full year's hours.
 
 The mistake goes in both directions, which points to unreliable pay-period labels. See `docs/bug_report.md`.
 
 ### 2. Missing company name
-All 64 missing-field rows in the sample are `company_name`; title and location were never missing. The full file has 1,719 such rows.
+All 64 missing-field rows in the sample are `company_name`; title and location were never missing. The full file has 1719 such rows.
 
 ### 3. Probable duplicates, and what sampling hid
 The sample shows 12 surplus rows (10 pairs and one triple). The full file shows **4 645**.
@@ -35,7 +35,7 @@ The sample shows 12 surplus rows (10 pairs and one triple). The full file shows 
 This gap is itself a finding. A duplicate is only visible when both copies are in the sample. With a 4.0% sample (5 000 of 123 849), the chance of keeping both rows of a pair is about 0.16%, so I would expect roughly 8 visible duplicates, and I saw 12. So the sample hides almost all duplicates, and **duplicate rates must be measured on the full data**. Row-level problems (missing values, bad salaries) were estimated fairly well by the sample (for example 0.24% vs 0.32% for finding 1).
 
 Evidence that the sample duplicates are probable true duplicates: the posting ids in each pair are very close (for example 3885105395 and 3885108043, same day, same employer, same title), which suggests the same job submitted twice. Caveats:
-- Two pairs disagree on salary (National General: 100,000 vs missing; Open Systems Technologies: 140,000 vs 170,000), so even true duplicates may carry conflicting data, and a dedupe rule has to choose which record wins.
+- Two pairs disagree on salary (National General: 100 000 vs missing; Open Systems Technologies: 140 000 vs 170 000), so even true duplicates may carry conflicting data, and a dedupe rule has to choose which record wins.
 - Employers such as hospitals and staffing firms sometimes publish several genuine openings for the same role at one site on one day, so some duplicates may be real. I did not classify the 4 645 full-data duplicates.
 
 ### 4 and 5. Salary ranges and outliers
@@ -43,7 +43,7 @@ The wide-range check is the more precise of the two. It catches the RN posting a
 
 ## Things that looked like bugs but weren't
 - **Hourly physician rates of $150-200** were flagged as outliers by the IQR rule. That is normal pay for physicians. The rule is crude on skewed pay data.
-- **A Travel RN at $2,247 per week** was flagged because the WEEKLY group has only 5 rows, so its quartiles meant nothing. I changed the check to ignore pay periods with fewer than 30 rows, and added a unit test for it.
+- **A Travel RN at $2 247 per week** was flagged because the WEEKLY group has only 5 rows, so its quartiles meant nothing. I changed the check to ignore pay periods with fewer than 30 rows, and added a unit test for it.
 - **A Software Engineer at 230k-550k (D. E. Shaw Research)** is high but plausible.
 - **Missing salary on about 76% of the sample** is how the source works (most postings do not publish pay), not a defect.
 - **The date window.** I first used `listed_time` as the posting date, but `original_listed_time` is closer to when it was posted (it reaches back to Dec 2023 in the full file), so I switched.
